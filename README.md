@@ -4,6 +4,7 @@
 ## TicTacToe Game:
 **Current Version:** 0.1.0
 **Last Update:** 23/02/2018
+
 **Features:**
 * Start a match
 * Handle user errors
