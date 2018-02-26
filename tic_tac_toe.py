@@ -111,22 +111,17 @@ if __name__ == "__main__":
             print("You need to define a board first, try:")
             print("%s -f x -b ____x____" % (__file__))
 
+        for position in board:
+            if position != '_' and position.upper() != 'X' and position.upper() != 'O':
+                print("You have defined a wrong board, you cant use "+position)
+                sys.exit(2)
+
         # We'll set the second player now
         if first == 'X':
             second = 'O'
         else:  # first = O
             second = 'X'
 
-        # Erros/Exceptions Handled atm:
-        '''
-         - Board with wrong size of position
-         - Position with wrong value
-         - More than one position filled in the initial board
-         - Invalid Parameter
-         - Missed board parameter
-         - Missed first player parameter
-         - Change 0 to O 
-        '''
 
         # Ok, now we can print our board and start the next round
         if verbose:
