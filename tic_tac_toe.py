@@ -43,15 +43,20 @@ def play(board, player, round):
         print("Round %d:" % round)
         print_board(board)
 
-    if round >= 5:
-        checkGameOver(board,round)
+    filleds = 0
+    for position in board:
+        if position != '_':
+            filleds += 1
+
+    if filleds >= 5:
+        checkGameOver(board, round, filleds)
 
     round += 1
 
     play(board, player, round)
 
 # Check if someone has won the game
-def checkGameOver(board, round):
+def checkGameOver(board, round, filleds):
 
     # For a unk reason PythonAnywhere have a problem with comma-separated prints... So, we need to concat with '+'
     if board[0] == board[1] == board[2] != '_':
@@ -71,7 +76,7 @@ def checkGameOver(board, round):
     elif board[2] == board[4] == board[6] != '_':
         print("Player " + board[2] + " won the game in round " + str(round) + " scoring at the secondary diagonal")
     else:
-        if round == 9:
+        if filleds == 9:
             print("The game ended in a draw. Better lucky next time :)")
         else:
             return
@@ -105,51 +110,12 @@ if __name__ == "__main__":
         if board == list("_________"):
             print("You need to define a board first, try:")
             print("%s -f x -b ____x____" % (__file__))
-            sys.exit()
-
-        # We'll be cool 1: If the player used 0 instead O we'll fix it
-        if first == '0':
-            first = 'O'
-        first = first.upper()
-        if first != 'X' and first != 'O':
-            print("You have selected a wrong option, try X or O, example:")
-            print("%s -f x -b ____x____" % (__file__))
-
-        # Checks for valid board:
-
-        # Initial board must only have 1 filled position
-        countO = countX = 0
-        for item in board:
-            if item.upper() == 'X':
-                countX += 1
-            elif item.upper() =='O':
-                countO +=1
-            elif item == "_":
-                pass
-            else:
-                print("Your board have a wrong value: "+ str(item))
-                print("Try again!")
-                sys.exit(2)
-
-        if(countO + countX) != 1:
-            print("You have defined a wrong initial board")
-            print("You should use only one completed position, you have used: "+ str((countO + countX)))
-            sys.exit(4)
 
         # We'll set the second player now
-        # Also, We'll be cool 2: If the player chose a value as first, but used the wrong value in the initial board, we'll fix it
         if first == 'X':
             second = 'O'
-            if countO == 1:
-                for item in board:
-                    if item.upper() == 'O':
-                        board[board.index(item)] = 'X'
         else:  # first = O
             second = 'X'
-            if countX == 1:
-                for item in board:
-                    if item.upper() == 'X':
-                        board[board.index(item)] = 'O'
 
         # Erros/Exceptions Handled atm:
         '''
