@@ -3,7 +3,7 @@ import sys
 import time
 import random
 
-
+# a
 def print_board(board):
     board = ''.join(board)
     if len(board) == 9:
