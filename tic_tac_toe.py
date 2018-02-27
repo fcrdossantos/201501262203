@@ -3,7 +3,7 @@ import sys
 import time
 import random
 
-# a
+
 def print_board(board):
     board = ''.join(board)
     if len(board) == 9:
@@ -24,74 +24,149 @@ def print_board(board):
             else:
                 print("-----------")
 
-# Play the next round until someone win the game
-def play(board, player, round):
 
-    randIndex = random.randint(0, 8)
-    while board[randIndex] != '_':
-        randIndex = random.randint(0, 8)
+def play(board, actual, round):
+    index = -1
+    choices = []
+    neutral = 0
+
+    if actual == 'X':
+        next = 'O'
     else:
-        board[randIndex] = player
+        next = 'X'
 
-    if player == 'X':
-        player = 'O'
-    else:
-        player = 'X'
-
-    # Get value from global var
-    if verbose:
-        print("Round %d:" % round)
-        print_board(board)
-
-    filleds = 0
     for position in board:
-        if position != '_':
-            filleds += 1
+        index += 1
+        if position == '_':
+            board[index] = actual
+            value = minmax(board, next, round)
+            board[index] = '_'
 
-    if filleds >= 5:
-        checkGameOver(board, round, filleds)
+            if value > neutral:
+                #print("Good Choise: "+str(index))
+                choices = [index]
+            elif value == neutral:
+                choices.append(index)
 
-    round += 1
+    #if len(choices)>0:
+        #print("Choises:")
+        #for choice in choices:
+          #print(choices[choices.index(choice)])
 
-    play(board, player, round)
+    if len(choices) > 0:
+        return random.choice(choices)
+    else:
+        randIndex = random.randint(0, 8)
+        while board[randIndex] != '_':
+            randIndex = random.randint(0, 8)
+        else:
+            return randIndex
+
+
+
+# Play the next round until someone win the game
+def minmax(board, actual, round):
+
+    if actual == 'X':
+        next = 'O'
+    else:
+        next = 'X'
+
+    winner = checkGameOver(board, round)
+
+    if winner == first:
+        return 1
+    elif winner == second:
+        return -1
+    elif winner == 'D':
+        return 0
+
+    if actual == first:
+        best = -1
+        index = -1
+        for position in board:
+            index += 1
+            if position == '_':
+                board[index] = actual
+                value = minmax(board, next, round)
+                board[index] = '_'
+                best = max(best,value)
+        return best
+
+    if actual == second:
+        best = 1
+        index = -1
+        for position in board:
+            index += 1
+            if position == '_':
+                board[index] = actual
+                value = minmax(board, next, round)
+                board[index] = '_'
+                best = min(best,value)
+        return best
+
+
+def make_move(board, position, player):
+        board[position] = player
 
 # Check if someone has won the game
-def checkGameOver(board, round, filleds):
+def checkGameOver(board, round):
 
     # For a unk reason PythonAnywhere have a problem with comma-separated prints... So, we need to concat with '+'
     if board[0] == board[1] == board[2] != '_':
-        print("Player " + board[0] + " won the game in round " + str(round) + " scoring at the first horizontal line")
-    elif board[3] == board[4] == board[5] != '_':
-        print("Player " + board[3] + " won the game in round " + str(round) + " scoring at the second horizontal line")
-    elif board[6] == board[7] == board[8] != '_':
-        print("Player " + board[6] + " won the game in round " + str(round) + " scoring at the third horizontal line")
-    elif board[0] == board[3] == board[6] != '_':
-        print("Player " + board[0] + " won the game in round " + str(round) + " scoring at the first vertical line")
-    elif board[1] == board[4] == board[7] != '_':
-        print("Player " + board[1] + " won the game in round " + str(round) + " scoring at the second vertical line")
-    elif board[2] == board[5] == board[8] != '_':
-        print("Player " + board[2] + " won the game in round " + str(round) + " scoring at the third vertical line")
-    elif board[0] == board[4] == board[8] != '_':
-        print("Player " + board[0] + " won the game in round " + str(round) + " scoring at the primary diagonal")
-    elif board[2] == board[4] == board[6] != '_':
-        print("Player " + board[2] + " won the game in round " + str(round) + " scoring at the secondary diagonal")
-    else:
-        if filleds == 9:
-            print("The game ended in a draw. Better lucky next time :)")
-        else:
-            return
-    sys.exit()
+        #print("Player " + board[0] + " won the game in round " + str(round) + " scoring at the first horizontal line")
+        return board[0]
 
-if __name__ == "__main__":
+    elif board[3] == board[4] == board[5] != '_':
+        #print("Player " + board[3] + " won the game in round " + str(round) + " scoring at the second horizontal line")
+        return board[3]
+    elif board[6] == board[7] == board[8] != '_':
+        #print("Player " + board[6] + " won the game in round " + str(round) + " scoring at the third horizontal line")
+        return board[6]
+
+    elif board[0] == board[3] == board[6] != '_':
+        #print("Player " + board[0] + " won the game in round " + str(round) + " scoring at the first vertical line")
+        return board[0]
+
+    elif board[1] == board[4] == board[7] != '_':
+        #print("Player " + board[1] + " won the game in round " + str(round) + " scoring at the second vertical line")
+        return board[1]
+
+    elif board[2] == board[5] == board[8] != '_':
+        #print("Player " + board[2] + " won the game in round " + str(round) + " scoring at the third vertical line")
+        return board[2]
+
+    elif board[0] == board[4] == board[8] != '_':
+        #print("Player " + board[0] + " won the game in round " + str(round) + " scoring at the primary diagonal")
+        return board[0]
+
+    elif board[2] == board[4] == board[6] != '_':
+        #print("Player " + board[2] + " won the game in round " + str(round) + " scoring at the secondary diagonal")
+        return board[2]
+    else:
+        for element in board:
+            if element == '_':
+                #print("Play Again")
+                return 'P'  #Play Again
+
+        #print("Draw")
+        return 'D'  #Draw
+
+
+def main():
     argv = sys.argv[1:]
     try:
-        opts, args = getopt.getopt(argv,"hf:b:v",["first=","board=","verbose="])
-        first = 'X'
+        opts, args = getopt.getopt(argv, "hf:b:v", ["first=", "board=", "verbose="])
+        global first
+        global second
+        global verbose
         board = list("_________")
         verbose = False
+
+
         for opt, arg in opts:
             if opt == '-h':
-                print("%s -f x -b ____x____"%(__file__))
+                print("%s -f x -b ____x____" % (__file__))
                 sys.exit()
             elif opt in ("-v", "--verbose"):
                 verbose = True
@@ -99,7 +174,8 @@ if __name__ == "__main__":
                 if len(arg) == 9:
                     board = list(arg)
                     for item in board:
-                        board[board.index(item)] = item.upper() # Used to compare x and X in checkGameOver in a better 'friendly view'.  ( PythonAnywhere have a problem with it )
+                        board[board.index(
+                            item)] = item.upper()  # Used to compare x and X in checkGameOver in a better 'friendly view'.  ( PythonAnywhere have a problem with it )
                 else:
                     print("You've defined a wrong-sized board, try again!")
                     print("Remember, your board need to have 9 positions, like: ____x____")
@@ -113,7 +189,7 @@ if __name__ == "__main__":
 
         for position in board:
             if position != '_' and position.upper() != 'X' and position.upper() != 'O':
-                print("You have defined a wrong board, you cant use "+position)
+                print("You have defined a wrong board, you cant use " + position)
                 sys.exit(2)
 
         # We'll set the second player now
@@ -122,19 +198,67 @@ if __name__ == "__main__":
         else:  # first = O
             second = 'X'
 
-
         # Ok, now we can print our board and start the next round
         if verbose:
             print("The game has been started!\n")
-            print("Round 1:")
             print_board(board)
 
-        play(board,second,2)
+        round = 1
+        actual = first
+        movePlayer = []
+        movePC = []
 
+        indexMove = play(board, first, round)
+        print("Move: "+ str(indexMove) +" Player: "+first)
+        make_move(board, indexMove, actual)
+
+        winner = checkGameOver(board, round)
+        actual = second
+        while (winner != 'D' and winner != first and winner != second):
+
+            round += 1
+
+            indexMove = play(board, actual, round)
+            print("Move: " + str(indexMove) + " Player: " + actual)
+            make_move(board, indexMove, actual)
+            winner = checkGameOver(board, round)
+
+            if actual == first:
+                actual = second
+                movePlayer.append(indexMove)
+            else:
+                actual = first
+                movePC.append(indexMove)
+
+        else:
+            print("\n\n\n")
+            if winner == first:
+                print("Player won!")
+            elif winner == second:
+                print("PC won!")
+            elif winner == 'D':
+                print("Draw!")
+            print("Player Moves:",end=" ")
+            for item in movePlayer:
+                print(item,end=" ")
+            print(" ")
+            print("PC Moves:",end=" ")
+            for item in movePC:
+                print(item,end=" ")
+            print(" ")
+            print("Final Round: "+ str(round))
 
     except getopt.GetoptError:
-        print ("You have used a wrong parameter. Valid parameters: -f (first), -v (verbose), -b (initial board), -h (help)")
-        print ("Example of use:")
-        print("%s -f x -b ____x____"%(__file__))
+        print(
+            "You have used a wrong parameter. Valid parameters: -f (first), -v (verbose), -b (initial board), -h (help)")
+        print("Example of use:")
+        print("%s -f x -b ____x____" % (__file__))
         sys.exit(2)
+
+if __name__ == "__main__":
+    first = 'X'
+    second = 'O'
+    verbose = True
+    main()
+
 
