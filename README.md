@@ -10,4 +10,4 @@
 * Handle user errors
 * Play next rounds until someone win the game
 * Check if someone have won the game
-* At the moment, it's just play randomly in free spaces 
+* Minimax AI to make moves
