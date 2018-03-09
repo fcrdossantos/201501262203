@@ -215,6 +215,7 @@ def main():
         if verbose:
             print_board(board)
         make_move(board, indexMove, actual)
+        movePlayer.append(indexMove)
 
         winner = checkGameOver(board, round)
         actual = second
@@ -231,7 +232,7 @@ def main():
 
             if actual == first:
                 actual = second
-                movePlayer.append(indexMove)
+                ovePlayer.append(indexMove)m
             else:
                 actual = first
                 movePC.append(indexMove)
@@ -244,8 +245,8 @@ def main():
                 print("PC won!")
             elif winner == 'D':
                 print("Draw!")
-            print("Player Moves: ",movePlayer)
-            print("PC Moves: ", movePC)
+            print("Player Moves: " + movePlayer)
+            print("PC Moves: " + movePC)
             print("Final Round: "+ str(round))
 
     except getopt.GetoptError:
