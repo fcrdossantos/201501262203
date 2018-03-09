@@ -188,10 +188,6 @@ def main():
             elif opt in ("-f", "--first"):
                 first = str(arg).upper()
 
-        if board == list("_________"):
-            print("You need to define a board first, try:")
-            print("%s -f x -b ____x____" % (__file__))
-
         for position in board:
             if position != '_' and position.upper() != 'X' and position.upper() != 'O':
                 print("You have defined a wrong board, you cant use " + position)
