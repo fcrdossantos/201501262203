@@ -58,16 +58,10 @@ def play(board, actual, round):
                 elif value == neutral:
                     choices.append(index)
 
-    #Update 09/03/2018 /\ Best Identation
-
     if len(choices) > 0:
         sorted_choices = sorted(choices, reverse= True)
-        print("Vários: ")
-        for i in sorted_choices:
-            print(i)
         return sorted_choices[0];
     else:
-        print("Só um:"+choices)
         randIndex = random.randint(0, 8)
         while board[randIndex] != '_':
             randIndex = random.randint(0, 8)
@@ -175,7 +169,6 @@ def main():
         board = list("_________")
         verbose = False
 
-
         for opt, arg in opts:
             if opt == '-h':
                 print("%s -f x -b ____x____" % (__file__))
@@ -211,8 +204,9 @@ def main():
             second = 'X'
 
         # Ok, now we can print our board and start the next round
+        print("The game has been started!\n")
         if verbose:
-            print("The game has been started!\n")
+            print("Initial board:")
             print_board(board)
 
         round = 1
@@ -222,7 +216,8 @@ def main():
 
         indexMove = play(board, first, round)
         print("Move: "+ str(indexMove) +" Player: "+first)
-        print_board(board)
+        if verbose:
+            print_board(board)
         make_move(board, indexMove, actual)
 
         winner = checkGameOver(board, round)
@@ -232,8 +227,9 @@ def main():
             round += 1
 
             indexMove = play(board, actual, round)
-            print_board(board)
             print("Move: " + str(indexMove) + " Player: " + actual)
+            if verbose:
+                print_board(board)
             make_move(board, indexMove, actual)
             winner = checkGameOver(board, round)
 
@@ -272,7 +268,7 @@ def main():
 if __name__ == "__main__":
     first = 'X'
     second = 'O'
-    verbose = True
+    verbose = False
     main()
 
 
