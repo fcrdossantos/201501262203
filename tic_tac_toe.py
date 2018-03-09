@@ -232,7 +232,7 @@ def main():
 
             if actual == first:
                 actual = second
-                ovePlayer.append(indexMove)m
+                movePlayer.append(indexMove)
             else:
                 actual = first
                 movePC.append(indexMove)
@@ -245,8 +245,8 @@ def main():
                 print("PC won!")
             elif winner == 'D':
                 print("Draw!")
-            print("Player Moves: " + movePlayer)
-            print("PC Moves: " + movePC)
+            print("Player Moves: " , movePlayer)
+            print("PC Moves: " , movePC)
             print("Final Round: "+ str(round))
 
     except getopt.GetoptError:
