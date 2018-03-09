@@ -244,14 +244,8 @@ def main():
                 print("PC won!")
             elif winner == 'D':
                 print("Draw!")
-            print("Player Moves:",end=" ")
-            for item in movePlayer:
-                print(item,end=" ")
-            print(" ")
-            print("PC Moves:",end=" ")
-            for item in movePC:
-                print(item,end=" ")
-            print(" ")
+            print("Player Moves: ",movePlayer)
+            print("PC Moves: ", movePC)
             print("Final Round: "+ str(round))
 
     except getopt.GetoptError:
