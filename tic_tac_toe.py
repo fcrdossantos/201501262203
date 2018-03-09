@@ -35,6 +35,7 @@ def play(board, actual, round):
     else:
         next = 'X'
 
+
     for position in board:
         index += 1
         if position == '_':
@@ -42,20 +43,31 @@ def play(board, actual, round):
             value = minmax(board, next, round)
             board[index] = '_'
 
-            if value > neutral:
-                #print("Good Choise: "+str(index))
-                choices = [index]
-            elif value == neutral:
-                choices.append(index)
+            if(actual == first):
+                if value > neutral:
+                    #print("Good Choise: "+str(index))
+                    choices = [index]
+                    break
+                elif value == neutral:
+                    choices.append(index)
+            else:
+                if value < neutral:
+                    #print("Good Choise: "+str(index))
+                    choices = [index]
+                    break
+                elif value == neutral:
+                    choices.append(index)
 
-    #if len(choices)>0:
-        #print("Choises:")
-        #for choice in choices:
-          #print(choices[choices.index(choice)])
+    #Update 09/03/2018 /\ Best Identation
 
     if len(choices) > 0:
-        return random.choice(choices)
+        sorted_choices = sorted(choices, reverse= True)
+        print("Vários: ")
+        for i in sorted_choices:
+            print(i)
+        return sorted_choices[0];
     else:
+        print("Só um:"+choices)
         randIndex = random.randint(0, 8)
         while board[randIndex] != '_':
             randIndex = random.randint(0, 8)
@@ -82,24 +94,24 @@ def minmax(board, actual, round):
         return 0
 
     if actual == first:
+        #print("Primeiro")
         best = -1
-        index = -1
         for position in board:
-            index += 1
             if position == '_':
-                board[index] = actual
+                index = board.index(position)
+                board[board.index(position)] = actual
                 value = minmax(board, next, round)
                 board[index] = '_'
                 best = max(best,value)
         return best
 
     if actual == second:
+        #print("Segundo")
         best = 1
-        index = -1
         for position in board:
-            index += 1
             if position == '_':
-                board[index] = actual
+                index = board.index(position)
+                board[board.index(position)] = actual
                 value = minmax(board, next, round)
                 board[index] = '_'
                 best = min(best,value)
@@ -210,6 +222,7 @@ def main():
 
         indexMove = play(board, first, round)
         print("Move: "+ str(indexMove) +" Player: "+first)
+        print_board(board)
         make_move(board, indexMove, actual)
 
         winner = checkGameOver(board, round)
@@ -219,6 +232,7 @@ def main():
             round += 1
 
             indexMove = play(board, actual, round)
+            print_board(board)
             print("Move: " + str(indexMove) + " Player: " + actual)
             make_move(board, indexMove, actual)
             winner = checkGameOver(board, round)
