@@ -200,10 +200,10 @@ def main():
             second = 'X'
 
         # Ok, now we can print our board and start the next round
-        print("The game has been started!\n")
-        if verbose:
-            print("Initial board:")
-            print_board(board)
+        #print("The game has been started!\n")
+        #if verbose:
+            #print("Initial board:")
+            #print_board(board)
 
         round = 1
         actual = first
@@ -211,9 +211,9 @@ def main():
         movePC = []
 
         indexMove = play(board, first, round)
-        print("Move: "+ str(indexMove) +" Player: "+first)
-        if verbose:
-            print_board(board)
+        #print("Move: "+ str(indexMove) +" Player: "+first)
+        #if verbose:
+            #print_board(board)
         make_move(board, indexMove, actual)
         movePlayer.append(indexMove)
 
@@ -224,9 +224,9 @@ def main():
             round += 1
 
             indexMove = play(board, actual, round)
-            print("Move: " + str(indexMove) + " Player: " + actual)
-            if verbose:
-                print_board(board)
+            #print("Move: " + str(indexMove) + " Player: " + actual)
+            #if verbose:
+                #print_board(board)
             make_move(board, indexMove, actual)
             winner = checkGameOver(board, round)
 
@@ -238,16 +238,22 @@ def main():
                 movePC.append(indexMove)
 
         else:
-            print("\n\n\n")
-            if winner == first:
-                print("Player won!")
-            elif winner == second:
-                print("PC won!")
-            elif winner == 'D':
-                print("Draw!")
-            print("Player Moves: " , movePlayer)
-            print("PC Moves: " , movePC)
-            print("Final Round: "+ str(round))
+           # print("\n\n\n")
+            #f winner == first:
+               # print("Player won!")
+            #elif winner == second:
+                #print("PC won!")
+            #elif winner == 'D':
+                #print("Draw!")
+            #print("Player Moves: " , movePlayer)
+            #print("PC Moves: " , movePC)
+           # print("Final Round: "+ str(round))
+
+            boardStr = ""
+            for pos in board:
+                boardStr = boardStr + str(pos).lower()
+            print(boardStr)
+            return boardStr
 
     except getopt.GetoptError:
         print(
